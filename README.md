@@ -11,6 +11,7 @@
 
 This task is a follow-up of the previous task **[CLI assistant bot](https://github.com/oleksandr-romashko/goit-pycore-hw-07)**, extended by adding saving the address book to disk and restoring it from disk using serializations implemented using [Pickle](https://docs.python.org/3/library/pickle.html).
 
+
 ### Table of Contents <!-- omit in toc -->
 - [Project Setup \& Run Instructions](#project-setup--run-instructions)
   - [Prerequisites](#prerequisites)
@@ -23,15 +24,10 @@ This task is a follow-up of the previous task **[CLI assistant bot](https://gith
   - [Task description](#task-description-1)
   - [Evaluation criteria](#evaluation-criteria)
 
-<details>
-
-<summary>
-<h3 style="display: inline-block">Project Setup & Run Instructions</h3>
-</summary>
 
 ### Project Setup & Run Instructions
 
-#### <a name="prerequisites"></a>Prerequisites
+#### Prerequisites
 
 Before starting, ensure that you have the following installed:
 
@@ -147,13 +143,6 @@ Once your virtual environment is set up, you can run the application code.
     run_alternative.bat
     ```
 
-</details>
-
-<details>
-
-<summary>
-<h3 style="display: inline-block; word-break: break-all;">Task Solution</h3>
-</summary>
 
 ### Task Solution
 
@@ -178,13 +167,6 @@ Application screenshot:
 
 ![task solution terminal screenshot](./assets/results/task_4_typical_solution.png)
 
-</details>
-
-<details>
-
-<summary>
-<h3 style="display: inline-block; word-break: break-all;">Task requirements</h3>
-</summary>
 
 ### Task requirements
 
@@ -233,5 +215,3 @@ def main():
 1. The serialization/deserialization protocol is implemented using `pickle`.
 2. All data must be saved upon exiting the program.
 3. The address book must be restored in the application upon the next session, exactly as it was during the previous session.
-
-</details>
