@@ -31,7 +31,7 @@ This task is a follow-up of the previous task **[CLI assistant bot](https://gith
 
 ### Project Setup & Run Instructions
 
-#### <a name="setup-prerequisites"></a>Prerequisites
+#### <a name="prerequisites"></a>Prerequisites
 
 Before starting, ensure that you have the following installed:
 
