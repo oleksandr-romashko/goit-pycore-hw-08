@@ -1,0 +1,25 @@
+    {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Launch in the typical mode (menu handling in match case)",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/src/main.py",
+                "args": [],
+                "envFile": "${workspaceFolder}/.env",
+                "console": "integratedTerminal"
+            },
+            {
+                "name": "Launch in the alternative mode (menu as a data structure)",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/src/main.py",
+                "args": [
+                    "--alternative"
+                ],
+                "envFile": "${workspaceFolder}/.env",
+                "console": "integratedTerminal"
+            },
+        ]
+    }
