@@ -20,6 +20,7 @@ from cli.command_handlers import (
     handle_birthdays,
     handle_help,
     handle_exit,
+    handle_empty,
     handle_unknown,
 )
 from decorators.keyboard_interrupt_error import keyboard_interrupt_error
@@ -27,19 +28,16 @@ from utils.constants import (
     MSG_WELCOME_MESSAGE_TITLE,
     MSG_WELCOME_MESSAGE_SUBTITLE,
     MSG_INPUT_PROMPT,
-    MENU_HELP_STR,
-    MSG_INVALID_EMPTY_COMMAND,
 )
 from utils.input_parser import parse_input
 from utils.log_config import init_logging
 
 # TODO:
-# - Move prints into handler.
-# - Handle help in both mains using single handler with message and default value.
 # - Add __getstate__ __setstate__ for pickle operations with state = copy.copy(self.__dict__).
 # - To classes with custom __eq__ add __hash__ too for collections using hash.
 # - Do not show (application interrupted by user) message when keyboard_interrupt but log it.
 # - Investigate options for storing global obj __book в src/services/contacts_manager.py as non-global object.
+# - (Optional) Move prints into handler.
 # - (Optional) Future enhancement: add handling remove_phone function.
 # - (Optional) Future enhancement: Add app state data file locking while app in
 #                                  use by another instance, e.g using 'portalocker'.
@@ -47,17 +45,6 @@ from utils.log_config import init_logging
 # Initialize the environment
 init_logging(logging.DEBUG if DEBUG else logging.INFO)  # Logging
 colorama.init(autoreset=True)  # Colorama for Windows compatibility
-
-
-def print_greeting() -> None:
-    """Print the welcome message title."""
-    print(colorama.Style.BRIGHT + f"\n{MSG_WELCOME_MESSAGE_TITLE}".upper())
-
-
-def print_initial_help_text(help_text: str = "") -> None:
-    """Print the welcome subtitle and optional help text."""
-    print(f"\n{MSG_WELCOME_MESSAGE_SUBTITLE}:")
-    print(f"\n{help_text}")
 
 
 def get_user_input() -> str:
@@ -73,22 +60,25 @@ def main():
     for an Assistant bot CLI application.
     """
     # Display initial greeting
-    print_greeting()
+    print(colorama.Style.BRIGHT + f"\n{MSG_WELCOME_MESSAGE_TITLE}".upper())
 
     # Load previously saved app data, if any
     handle_load_app_data()
 
     # Display initial help message
-    print_initial_help_text(MENU_HELP_STR)
+    print(f"\n{MSG_WELCOME_MESSAGE_SUBTITLE}:\n")
+    print(handle_help())
 
     while True:
         # Read user input
         user_input = get_user_input()
+
+        # Handle empty input guard
         if not user_input:
-            print(f"{MSG_INVALID_EMPTY_COMMAND}.")
+            print(handle_empty())
             continue
 
-        # Get command and arguments from input string
+        # Get command and parse arguments from input string
         command, args = parse_input(user_input)
 
         # Match input command with one from the menu using simple command dispatcher
@@ -131,16 +121,18 @@ def main_alternative():
 
     menu = {
         Command.HELLO: {
-            # Help for the menu item structure:
-            # A string showing expected arguments help text
-            # in <command> (required argument)
-            # or [command] (optional argument) format
-            # or empty if none are required.
+            # Help for a menu item structure:
+            #
+            # A string showing expected arguments help text:
+            #   <command> (required argument)
+            #   [command] (optional argument) format
+            #   empty if none are required.
             "args_str": "",
             # A string describing what this command does
             "description": "Greet the user",
             # The function that handles this command
             "handler": lambda _: handle_hello(),
+            # Visibility flag - to show item or not in displayed help menu
             "visible": True,
         },
         Command.ALL: {
@@ -194,7 +186,7 @@ def main_alternative():
         Command.HELP: {
             "args_str": "",
             "description": "Show available commands (this menu)",
-            "handler": lambda _: help_text,
+            "handler": lambda _: handle_help(help_text),
             "visible": True,
         },
         Command.EXIT: {
@@ -208,7 +200,7 @@ def main_alternative():
         },
     }
 
-    def generate_help_text():
+    def generate_help_text(menu):
         """
         Generate formatted help text from available commands.
 
@@ -277,25 +269,28 @@ def main_alternative():
         # Fallback if command not found
         return ""
 
-    help_text = generate_help_text()
+    help_text = generate_help_text(menu)
 
     # Display initial greeting
-    print_greeting()
+    print(colorama.Style.BRIGHT + f"\n{MSG_WELCOME_MESSAGE_TITLE}".upper())
 
     # Load previously saved app data, if any
     handle_load_app_data()
 
     # Display initial help message
-    print_initial_help_text(help_text)
+    print(f"\n{MSG_WELCOME_MESSAGE_SUBTITLE}:\n")
+    print(handle_help(help_text))
 
     while True:
         # Read user input
         user_input = get_user_input()
+
+        # Handle empty input guard
         if not user_input:
-            print(f"{MSG_INVALID_EMPTY_COMMAND}.")
+            print(handle_empty())
             continue
 
-        # Get command and arguments from input string
+        # Get command and parse arguments from input string
         command, args = parse_input(user_input)
 
         # Match input command with command from the menu

@@ -12,7 +12,7 @@ MSG_WELCOME_MESSAGE_SUBTITLE = "Here you have the list of available options for 
 MSG_HELLO_MESSAGE = "How can I help you?"
 MSG_APP_PURPOSE_MESSAGE = "If you'd like, I can help you manage your phone contacts"
 MSG_EXIT_MESSAGE = "Good bye!"
-MSG_INVALID_EMPTY_COMMAND = "You entered an empty command. Please try again"
+MSG_INVALID_EMPTY_COMMAND = "No command entered. Please try again"
 INVALID_COMMAND_MESSAGE = "Invalid command"
 
 # UI Prompts

@@ -26,6 +26,7 @@ from utils.constants import (
     MSG_APP_PURPOSE_MESSAGE,
     MSG_EXIT_MESSAGE,
     MENU_HELP_STR,
+    MSG_INVALID_EMPTY_COMMAND,
     INVALID_COMMAND_MESSAGE,
     MSG_HELP_AWARE_TIP,
     MSG_SAVE_SUCCESS,
@@ -195,10 +196,10 @@ def handle_birthdays() -> str:
     return format_text_output(result)
 
 
-def handle_help() -> str:
+def handle_help(help_text: str = MENU_HELP_STR) -> str:
     """Returns formatted help menu."""
     # No validation here
-    return MENU_HELP_STR
+    return help_text
 
 
 def handle_exit(prefix="", message="", suffix="", save_state_on_exit=True):
@@ -222,6 +223,13 @@ def handle_exit(prefix="", message="", suffix="", save_state_on_exit=True):
         f"{f' ({suffix})' if suffix else ''}"
     )
     sys.exit(0)
+
+
+def handle_empty() -> str:
+    """Handles empty command from user by showing a fallback message."""
+    # No validation here
+
+    return f"{MSG_INVALID_EMPTY_COMMAND}."
 
 
 def handle_unknown() -> str:
