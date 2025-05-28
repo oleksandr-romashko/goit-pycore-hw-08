@@ -15,6 +15,7 @@ from cli.command_handlers import (
     handle_change,
     handle_delete,
     handle_phone,
+    handle_delete_phone,
     handle_add_birthday,
     handle_show_birthday,
     handle_birthdays,
@@ -33,7 +34,6 @@ from utils.input_parser import parse_input
 from utils.log_config import init_logging
 
 # TODO:
-# - (Optional) Future enhancement: Add handling remove_phone function.
 # - (Optional) Future enhancement: Investigate options for storing global obj __book
 #                                  from services/contacts_manager.py as non-global object.
 # - (Optional) Move prints into handler. Require architectural decision.
@@ -93,6 +93,8 @@ def main():
                 print(handle_delete(args))
             case Command.PHONE:
                 print(handle_phone(args))
+            case Command.DELETE_PHONE:
+                print(handle_delete_phone(args))
             case Command.ADD_BIRTHDAY:
                 print(handle_add_birthday(args))
             case Command.SHOW_BIRTHDAY:
@@ -161,6 +163,12 @@ def main_alternative():
             "args_str": "<name>",
             "description": "Show contact's phone number(s)",
             "handler": handle_phone,
+            "visible": True,
+        },
+        Command.DELETE_PHONE: {
+            "args_str": "<name> <phone>",
+            "description": "Delete contact's phone",
+            "handler": handle_delete_phone,
             "visible": True,
         },
         Command.ADD_BIRTHDAY: {

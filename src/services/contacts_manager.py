@@ -149,7 +149,7 @@ def change_contact(
 
 
 @service_error
-def delete_contact(username: str) -> dict[str, str]:
+def remove_contact(username: str) -> dict[str, str]:
     """
     Deletes a contact by name from the address book.
 

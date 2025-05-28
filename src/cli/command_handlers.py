@@ -15,8 +15,9 @@ from services.contacts_manager import (
     show_all,
     add_contact,
     change_contact,
-    delete_contact,
+    remove_contact,
     show_phone,
+    remove_phone,
     add_birthday,
     show_birthday,
     show_upcoming_birthdays,
@@ -141,7 +142,7 @@ def handle_delete(args: list[str]) -> str:
     """
     ensure_args_have_n_arguments(args, 1, "username")
     username = args[0]
-    result = delete_contact(username)
+    result = remove_contact(username)
     return format_text_output(result)
 
 
@@ -159,6 +160,25 @@ def handle_phone(args: list[str]) -> str:
     search_term = args[0]
 
     result = show_phone(search_term)
+    return format_text_output(result)
+
+
+@input_error
+def handle_delete_phone(args: list[str]) -> str:
+    """
+    Delete an existing contact's phone number.
+
+    Expected arguments in 'args': [username] [phone_number]
+
+    Args:
+        args (list[str]): List containing the username and phone number of the contact to delete.
+
+    Returns:
+        str: Formatted text output indicating the result of the delete operation.
+    """
+    ensure_args_have_n_arguments(args, 2, "username and a phone number")
+    username, phone_number = args
+    result = remove_phone(username, phone_number)
     return format_text_output(result)
 
 
