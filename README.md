@@ -153,7 +153,11 @@ Added functionality for saving the address book to disk and restoring it from di
 #### <a name="assignment-solution"></a>Solution
 
 Solution for this assignment is located in the following files:
-* [main.py](./src/main.py) class - main entry point, presentation layer
+* [main.py](./src/main.py) class - main entry point, presentation layer. Loads previous app state (if any) and dispatches exiting application where app state saving is executed.
+* [cli/command_handlers.py](./src/cli/command_handlers.py) - handler for load state and exit with saving commands.
+* [services/contacts_manager.py](./src/services/contacts_manager.py) - stores instance of AddressBook instance, that is loaded in a lazy way. Has functions to invoke loading and saving on of AddressBook instance state using respective mechanisms from persistence layer.
+* [persistence/file_handler.py](./src/persistence/file_handler.py) - handler for file loading and saving. Handles all errors and raises custom for persistence layer [PermissionError](./src/persistence/persistence_error.py).
+* [persistence/pickle_io.py](./src/persistence/pickle_io.py) - exact implementation of app state serialization using [pickle](https://docs.python.org/3/library/pickle.html).
 
 UML Class Diagram of the solution (created using [Star UML](https://staruml.io/) tool, source file is located [here](./assets/uml/class_diagram-star-uml.mdj)):
 
