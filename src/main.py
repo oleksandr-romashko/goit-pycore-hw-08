@@ -2,15 +2,17 @@
 import sys
 import logging
 
-from colorama import init, Style
+import colorama
 
 from config import DEBUG
 
 from cli.command_handlers import (
+    handle_load_app_data,
     handle_hello,
     handle_all,
     handle_add,
     handle_change,
+    handle_delete,
     handle_phone,
     handle_add_birthday,
     handle_show_birthday,
@@ -20,7 +22,6 @@ from cli.command_handlers import (
     handle_unknown,
 )
 from decorators.keyboard_interrupt_error import keyboard_interrupt_error
-from services.address_book.address_book import AddressBook
 from utils.constants import (
     MSG_WELCOME_MESSAGE_TITLE,
     MSG_WELCOME_MESSAGE_SUBTITLE,
@@ -34,12 +35,16 @@ from utils.log_config import init_logging
 
 # Initialize the environment
 init_logging(logging.DEBUG if DEBUG else logging.INFO)  # Logging
-init(autoreset=True)  # Colorama for Windows compatibility
+colorama.init(autoreset=True)  # Colorama for Windows compatibility
 
 
-def print_greeting(help_text: str = "") -> None:
-    """Print the welcome message and optional help text."""
-    print(Style.BRIGHT + f"\n{MSG_WELCOME_MESSAGE_TITLE}".upper())
+def print_greeting() -> None:
+    """Print the welcome message title."""
+    print(colorama.Style.BRIGHT + f"\n{MSG_WELCOME_MESSAGE_TITLE}".upper())
+
+
+def print_initial_help_text(help_text: str = "") -> None:
+    """Print the welcome subtitle and optional help text."""
     print(f"\n{MSG_WELCOME_MESSAGE_SUBTITLE}:")
     print(f"\n{help_text}")
 
@@ -56,11 +61,14 @@ def main():
     Handles user input, command dispatching, and help generation
     for an Assistant bot CLI application.
     """
+    # Display initial greeting
+    print_greeting()
 
-    book = AddressBook()
+    # Load previously saved app data, if any
+    handle_load_app_data()
 
-    # Display initial greeting and help text
-    print_greeting(MENU_HELP_STR)
+    # Display initial help message
+    print_initial_help_text(MENU_HELP_STR)
 
     while True:
         # Read user input
@@ -72,24 +80,29 @@ def main():
         # Get command and arguments from input string
         command, args = parse_input(user_input)
 
-        # Match input command with one from the menu
+        # Match input command with one from the menu using simple command dispatcher
+        # TODO: Move prints into handler
+        # TODO: Add enum match
+        # TODO: Handle help in both mains using single handler with message and default value
         match command:
             case "hello":
                 print(handle_hello())
             case "all":
-                print(handle_all(book))
+                print(handle_all())
             case "add":
-                print(handle_add(args, book))
+                print(handle_add(args))
             case "change":
-                print(handle_change(args, book))
+                print(handle_change(args))
+            case "delete":
+                print(handle_delete(args))
             case "phone":
-                print(handle_phone(args, book))
+                print(handle_phone(args))
             case "add-birthday":
-                print(handle_add_birthday(args, book))
+                print(handle_add_birthday(args))
             case "show-birthday":
-                print(handle_show_birthday(args, book))
+                print(handle_show_birthday(args))
             case "birthdays":
-                print(handle_birthdays(book))
+                print(handle_birthdays())
             case "help":
                 print(handle_help())
             case "exit" | "close":
@@ -107,7 +120,6 @@ def main_alternative():
     Handles user input, command dispatching, and help generation
     for an Assistant bot CLI application.
     """
-    book = AddressBook()
 
     menu = {
         "hello": {
@@ -120,13 +132,13 @@ def main_alternative():
             # A string describing what this command does
             "description": "Greet the user",
             # The function that handles this command
-            "handler": lambda _, __: handle_hello(),
+            "handler": lambda _: handle_hello(),
             "visible": True,
         },
         "all": {
             "args_str": "",
             "description": "Display all contacts",
-            "handler": lambda _, book: handle_all(book),
+            "handler": lambda _: handle_all(),
             "visible": True,
         },
         "add": {
@@ -162,13 +174,13 @@ def main_alternative():
         "birthdays": {
             "args_str": "",
             "description": "Show upcoming birthdays within the upcoming week",
-            "handler": lambda _, book: handle_birthdays(book),
+            "handler": lambda _: handle_birthdays(),
             "visible": True,
         },
         "help": {
             "args_str": "",
             "description": "Show available commands (this menu)",
-            "handler": lambda _, __: help_text,
+            "handler": lambda _: help_text,
             "visible": True,
         },
         "exit": {
@@ -177,7 +189,7 @@ def main_alternative():
             "aliases": ["close"],
             "args_str": "",
             "description": "Exit the app",
-            "handler": lambda _, __: handle_exit(),
+            "handler": lambda _: handle_exit(),
             "visible": True,
         },
     }
@@ -237,8 +249,9 @@ def main_alternative():
         Returns:
             str: The matched canonical command string, or an empty string if not recognized.
         """
+        cmd = cmd.lower()
         for item in menu:
-            if cmd.lower == item.lower():
+            if cmd == item.lower():
                 return item
 
         # Resolve aliases
@@ -252,8 +265,14 @@ def main_alternative():
 
     help_text = generate_help_text()
 
-    # Display initial greeting and help text
-    print_greeting(help_text)
+    # Display initial greeting
+    print_greeting()
+
+    # Load previously saved app data, if any
+    handle_load_app_data()
+
+    # Display initial help message
+    print_initial_help_text(help_text)
 
     while True:
         # Read user input
@@ -274,7 +293,7 @@ def main_alternative():
 
         # Call handling function
         handler = metadata.get("handler")
-        result = handler(args, book)
+        result = handler(args)
         if result:
             print(result)
 

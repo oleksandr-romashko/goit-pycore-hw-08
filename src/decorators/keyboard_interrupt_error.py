@@ -12,8 +12,10 @@ def keyboard_interrupt_error(on_interrupt):
     Decorator to handle KeyboardInterrupt exceptions in CLI apps.
 
     Args:
-        on_interrupt (Callable): Function to call on KeyboardInterrupt.
-                                 Must accept prefix and suffix keyword arguments.
+        on_interrupt (Callable): Function to call when a KeyboardInterrupt is caught.
+                                 It must accept `prefix` and `suffix` keyword arguments.
+    Returns:
+        Callable: The decorated function that handles KeyboardInterrupt gracefully.
     """
 
     def wrapper(func):

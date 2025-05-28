@@ -12,6 +12,7 @@ from datetime import date
 
 from services.address_book.phone import Phone
 from utils.constants import (
+    MSG_LOAD_STORAGE_FIRST,
     MSG_CONTACT_EXISTS,
     MSG_NO_CONTACTS,
     MSG_CONTACT_NOT_FOUND,
@@ -21,6 +22,22 @@ from utils.constants import (
 )
 from utils.date_utils import format_date_str
 from validators.errors import ValidationError
+
+
+def ensure_contacts_storage_is_loaded(storage, func_ref="loading function first"):
+    """
+    Verify that the contact storage has been loaded.
+
+    Args:
+        storage (Any): The in-memory contact storage (should not be None).
+        func_ref (str): A reference to the function that should have been called before
+                        accessing the storage (used in error messages).
+
+    Raises:
+        ValidationError: If the contact storage has not been loaded.
+    """
+    if storage is None:
+        raise ValidationError(MSG_LOAD_STORAGE_FIRST.format(func_ref))
 
 
 def ensure_contacts_storage_not_empty(contacts: dict) -> None:

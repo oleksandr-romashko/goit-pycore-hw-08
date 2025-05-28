@@ -4,7 +4,7 @@ used across the assistant bot application. These constants include UI strings,
 user guidance text, validation rules, and formatting hints.
 """
 
-# === CLI Messages ===
+# === CLI ===
 
 # Welcome & Exit Messages
 MSG_WELCOME_MESSAGE_TITLE = "Welcome to the assistant bot!"
@@ -19,9 +19,7 @@ INVALID_COMMAND_MESSAGE = "Invalid command"
 MSG_HELP_AWARE_TIP = "type 'help' for the available list of commands"
 MSG_INPUT_PROMPT = f"Enter a command (or {MSG_HELP_AWARE_TIP})"
 
-# === Help Menu ===
-
-# Menu
+# Help Menu
 MENU_HELP_STR = """hello                                 - Greet the user
 all                                   - Display all contacts
 add <name> <phone>                    - Add a new contact or add phone to the existing one
@@ -33,29 +31,9 @@ birthdays                             - Show upcoming birthdays within the upcom
 help                                  - Show available commands (this menu)
 exit (or close)                       - Exit the app"""
 
-# === Date & Format Constants ===
+# === CONTACT MANAGER ===
 
-DATE_FORMAT = "%d.%m.%Y"
-DATE_FORMAT_STR_REPRESENTATION = "DD.MM.YYYY"
-
-# === Text Formatting Defaults ===
-
-DEFAULT_TRUNCATE_LENGTH = 8
-DEFAULT_LINE_OFFSET = " " * 2
-LINE_VALUE_GROUP_SEPARATION_SYMBOL = ":"
-LINE_VALUE_LIST_SEPARATION_SYMBOL = ","
-
-# === Validator Messages ===
-
-MSG_CONTACT_EXISTS = "Contact with username '{0}' already exists"
-MSG_NO_CONTACTS = "You don't have contacts yet, but you can add one anytime."
-MSG_CONTACT_NOT_FOUND = "Contact '{0}' not found"
-MSG_PHONE_NUMBER_EXISTS = "Contact '{0}' has '{1}' phone number already."
-MSG_PHONE_NUMBER_NOT_FOUND = "Phone number '{0}' for contact '{1}' not found."
-MSG_BIRTHDAY_DUPLICATE = "Birthday for '{0}' is already set to '{1}'."
-
-# === Contact Manager Messages and Feedback ===
-
+# Contacts messages and feedback
 MSG_HAVE_CONTACTS = "You have {0} contact{1}"
 MSG_CONTACT_ADDED = "Contact added."
 MSG_CONTACT_UPDATED = "Contact updated."
@@ -74,12 +52,11 @@ MSG_BIRTHDAYS_NO_UPCOMING = "You have no birthday in {0}."
 MSG_BIRTHDAYS_FOUND_MATCHES = "Found {0} birthday congratulation{1} in {2}"
 MSG_BIRTHDAY_MOVED = "(moved to closest weekday from {0})"
 
-# === Error Handling Messages ===
-
+# Error Handling Messages
 ERR_KEY_ERROR = "Requested item not found."
 ERR_INDEX_ERROR = "Missing or incomplete arguments."
 ERR_VALUE_ERROR = "Invalid input value."
-MSG_INTERRUPTED_BY_USER = "(Interrupted by user)"
+MSG_INTERRUPTED_BY_USER = "application interrupted by user"
 ERR_ARG_COUNT_ERROR = "You must provide {expected} non-empty argument{plural}{details}."
 ERR_TYPE_ERROR = "Expected type '{expected}', but received type '{actual}'."
 
@@ -99,15 +76,69 @@ DATE_FORMAT_INVALID_ERROR = (
 )
 BIRTHDAY_IN_FUTURE_ERROR = "Given birthday date '{value}' can't be in the future."
 
-# === Validation Constraints ===
+# === MODELS ===
 
+# Date & format constants
+DATE_FORMAT = "%d.%m.%Y"
+DATE_FORMAT_STR_REPRESENTATION = "DD.MM.YYYY"
+
+# Text formatting defaults
+DEFAULT_TRUNCATE_LENGTH = 8
+DEFAULT_LINE_OFFSET = " " * 2
+LINE_VALUE_GROUP_SEPARATION_SYMBOL = ":"
+LINE_VALUE_LIST_SEPARATION_SYMBOL = ","
+
+# === VALIDATORS ===
+
+# Validator messages
+MSG_LOAD_STORAGE_FIRST = "Book is not loaded. Call {0} first."
+MSG_CONTACT_EXISTS = "Contact with username '{0}' already exists"
+MSG_NO_CONTACTS = "You don't have contacts yet, but you can add one anytime."
+MSG_CONTACT_NOT_FOUND = "Contact '{0}' not found"
+MSG_PHONE_NUMBER_EXISTS = "Contact '{0}' has '{1}' phone number already."
+MSG_PHONE_NUMBER_NOT_FOUND = "Phone number '{0}' for contact '{1}' not found."
+MSG_BIRTHDAY_DUPLICATE = "Birthday for '{0}' is already set to '{1}'."
+
+# Validation constraints
 NAME_MIN_LENGTH = 2
 NAME_MAX_LENGTH = 50
 MAX_DISPLAY_NAME_LEN = 15
 PHONE_FORMAT_DESC_STR = "10 digits, optionally starting with '+'"
 
-# === Default deprecation reason used in the transition_warning decorator ===
+# === PERSISTENCE ===
 
+# Filename to store app data
+DEFAULT_FILENAME = "addressbook.pkl"
+
+# User-facing error messages
+MSG_SAVE_SUCCESS = "Contacts saved successfully."
+MSG_FILE_NO_PERMISSION = (
+    # "You do not have permission to access the contacts file. "
+    # "Another application or process may be using it. "
+    "Another application blocks this app resources. "
+    "Please close other application and try again."
+    # "Please close other programs and try again."
+)
+MSG_FILE_ERR_UNEXPECTED_ERR = "An unexpected error occurred while {0} contacts data."
+
+# Logging templates
+LOG_FILE_LOAD_SUCCESS = "Loaded address book from %s"
+LOG_FILE_NO_FILE_CREATED = (
+    "App data file not found. Creating fresh instance of AddressBook class"
+)
+LOG_FILE_SAVE_SUCCESS = "Saved address book to %s"
+LOG_FILE_ERR_NO_PERMISSION = (
+    "You do not have permission to access '%s' while %s contacts data"
+)
+LOG_FILE_ERR_IS_DIRECTORY = (
+    "Expected a file, but found a directory at '%s' while %s contacts data"
+)
+LOG_FILE_ERR_OS_ERR = "OS error occurred while %s '%s': %s"
+LOG_FILE_ERR_UNEXPECTED_ERR = "Unexpected error while %s data from '%s': %s"
+
+# === DEPRECATION WARNING ===
+
+# Default deprecation reason used in the transition_warning decorator
 DEFAULT_TRANSITION_REASON = (
     "[TRANSITION DEBUG] This function '%s' is transitional "
     "and will be removed in a future version. %s"

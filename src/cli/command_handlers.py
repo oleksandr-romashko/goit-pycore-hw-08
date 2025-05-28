@@ -8,10 +8,14 @@ invokes business logic, and generates an appropriate response.
 import sys
 
 from decorators.input_error import input_error
+from persistence.persistence_error import PersistenceError
 from services.contacts_manager import (
+    load_contacts,
+    save_contacts,
     show_all,
     add_contact,
     change_contact,
+    delete_contact,
     show_phone,
     add_birthday,
     show_birthday,
@@ -24,12 +28,35 @@ from utils.constants import (
     MENU_HELP_STR,
     INVALID_COMMAND_MESSAGE,
     MSG_HELP_AWARE_TIP,
+    MSG_SAVE_SUCCESS,
 )
 from utils.text_utils import format_contacts_output, format_text_output
 from validators.args_validators import ensure_args_have_n_arguments
 
 
-# TODO: Optional future enhancement: add handling (delete_contact, remove_phone) functions
+# TODO: Optional future enhancement: add handling remove_phone function
+
+
+def handle_load_app_data():
+    """
+    Load application data (e.g., contacts) from persistent storage.
+
+    If loading fails, the function gracefully exits the application.
+    Should be called at the start of the application to initialize state.
+
+    Raises:
+        None. Exits the application on failure.
+    """
+    try:
+        load_contacts()
+    except PersistenceError as exc:
+        err_message = f"\n{exc}" if exc else ""
+        handle_exit(
+            prefix="\n",
+            message=f"Failed to load application data.{err_message} Exiting.",
+            suffix="can't start the application",
+            save_state_on_exit=False,
+        )
 
 
 def handle_hello() -> str:
@@ -39,7 +66,7 @@ def handle_hello() -> str:
 
 
 @input_error
-def handle_all(book: dict) -> str:
+def handle_all() -> str:
     """
     Return a formatted string listing all saved contacts, their phone numbers and birthdays.
 
@@ -65,12 +92,16 @@ def handle_all(book: dict) -> str:
     """
     # No validation checks here
 
-    contacts_dict = show_all(book)
-    return format_contacts_output(contacts_dict)
+    result = show_all()
+
+    if result.get("message"):
+        return format_text_output(result)
+
+    return format_contacts_output(result)
 
 
 @input_error
-def handle_add(args: list[str], book: dict) -> str:
+def handle_add(args: list[str]) -> str:
     """
     Add a new contact.
 
@@ -78,12 +109,12 @@ def handle_add(args: list[str], book: dict) -> str:
     """
     ensure_args_have_n_arguments(args, 2, "username and a phone number")
     username, phone_number = args
-    result = add_contact(username, phone_number, book)
+    result = add_contact(username, phone_number)
     return format_text_output(result)
 
 
 @input_error
-def handle_change(args: list[str], book: dict) -> str:
+def handle_change(args: list[str]) -> str:
     """
     Change an existing contact's phone number.
 
@@ -93,12 +124,31 @@ def handle_change(args: list[str], book: dict) -> str:
         args, 3, "username, old phone number and new phone number"
     )
     username, prev_phone_number, new_phone_number = args
-    result = change_contact(username, prev_phone_number, new_phone_number, book)
+    result = change_contact(username, prev_phone_number, new_phone_number)
     return format_text_output(result)
 
 
 @input_error
-def handle_phone(args: list[str], book: dict) -> str:
+def handle_delete(args: list[str]) -> str:
+    """
+    Delete an existing contact.
+
+    Expected arguments in 'args': [username]
+
+    Args:
+        args (list[str]): List containing the username of the contact to delete.
+
+    Returns:
+        str: Formatted text output indicating the result of the delete operation.
+    """
+    ensure_args_have_n_arguments(args, 1, "username")
+    username = args[0]
+    result = delete_contact(username)
+    return format_text_output(result)
+
+
+@input_error
+def handle_phone(args: list[str]) -> str:
     """
     Return phone numbers for contacts matching the search term (partial match supported).
 
@@ -110,12 +160,12 @@ def handle_phone(args: list[str], book: dict) -> str:
     # postponed further to the handler
     search_term = args[0]
 
-    result = show_phone(search_term, book)
+    result = show_phone(search_term)
     return format_text_output(result)
 
 
 @input_error
-def handle_add_birthday(args: list[str], book: dict) -> str:
+def handle_add_birthday(args: list[str]) -> str:
     """
     Adds a birthday to the specified contact.
 
@@ -123,12 +173,12 @@ def handle_add_birthday(args: list[str], book: dict) -> str:
     """
     ensure_args_have_n_arguments(args, 2, "username and a birthday")
     username, date = args
-    result = add_birthday(username, date, book)
+    result = add_birthday(username, date)
     return format_text_output(result)
 
 
 @input_error
-def handle_show_birthday(args: list[str], book: dict) -> str:
+def handle_show_birthday(args: list[str]) -> str:
     """
     Displays the birthday of the specified contact.
 
@@ -136,15 +186,15 @@ def handle_show_birthday(args: list[str], book: dict) -> str:
     """
     ensure_args_have_n_arguments(args, 1, "username")
     username = args[0]
-    result = show_birthday(username, book)
+    result = show_birthday(username)
     return format_text_output(result, lines_offset="")
 
 
 @input_error
-def handle_birthdays(book: dict) -> str:
+def handle_birthdays() -> str:
     """Displays all birthdays occurring in the upcoming week."""
     # No validation checks here
-    result = show_upcoming_birthdays(book)
+    result = show_upcoming_birthdays()
     return format_text_output(result)
 
 
@@ -154,10 +204,26 @@ def handle_help() -> str:
     return MENU_HELP_STR
 
 
-def handle_exit(prefix="", suffix=""):
+def handle_exit(prefix="", message="", suffix="", save_state_on_exit=True):
     """Print a farewell message and terminate the program."""
     # No validation here
-    print(f"{prefix}{MSG_EXIT_MESSAGE}{f' {suffix}' if suffix else ''}")
+
+    if save_state_on_exit:
+        try:
+            save_contacts()
+            message = MSG_SAVE_SUCCESS
+        except PersistenceError as exc:
+            message = f"ERROR: Could not save contacts. {exc}"
+            if suffix:
+                suffix = ", " + suffix
+            suffix = "quitting without saving changes" + suffix
+
+    print(
+        f"{prefix}"
+        f"{f'{message}\n' if message else ''}"
+        f"{MSG_EXIT_MESSAGE}"
+        f"{f' ({suffix})' if suffix else ''}"
+    )
     sys.exit(0)
 
 
