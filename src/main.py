@@ -34,11 +34,15 @@ from utils.input_parser import parse_input
 from utils.log_config import init_logging
 
 # TODO:
-# - Move prints into handler
-# - Handle help in both mains using single handler with message and default value
-# - (Optional) Future enhancement: add handling remove_phone function
+# - Move prints into handler.
+# - Handle help in both mains using single handler with message and default value.
+# - Add __getstate__ __setstate__ for pickle operations with state = copy.copy(self.__dict__).
+# - To classes with custom __eq__ add __hash__ too for collections using hash.
+# - Do not show (application interrupted by user) message when keyboard_interrupt but log it.
+# - Investigate options for storing global obj __book в src/services/contacts_manager.py as non-global object.
+# - (Optional) Future enhancement: add handling remove_phone function.
 # - (Optional) Future enhancement: Add app state data file locking while app in
-#                                  use by another instance, e.g using 'portalocker'
+#                                  use by another instance, e.g using 'portalocker'.
 
 # Initialize the environment
 init_logging(logging.DEBUG if DEBUG else logging.INFO)  # Logging
