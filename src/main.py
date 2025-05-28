@@ -33,6 +33,12 @@ from utils.constants import (
 from utils.input_parser import parse_input
 from utils.log_config import init_logging
 
+# TODO:
+# - Move prints into handler
+# - Handle help in both mains using single handler with message and default value
+# - (Optional) Future enhancement: add handling remove_phone function
+# - (Optional) Future enhancement: Add app state data file locking while app in
+#                                  use by another instance, e.g using 'portalocker'
 
 # Initialize the environment
 init_logging(logging.DEBUG if DEBUG else logging.INFO)  # Logging
@@ -82,9 +88,6 @@ def main():
         command, args = parse_input(user_input)
 
         # Match input command with one from the menu using simple command dispatcher
-        # TODO: Move prints into handler
-        # TODO: Add enum match
-        # TODO: Handle help in both mains using single handler with message and default value
         match command:
             case Command.HELLO:
                 print(handle_hello())

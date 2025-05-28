@@ -34,9 +34,6 @@ from utils.text_utils import format_contacts_output, format_text_output
 from validators.args_validators import ensure_args_have_n_arguments
 
 
-# TODO: Optional future enhancement: add handling remove_phone function
-
-
 def handle_load_app_data():
     """
     Load application data (e.g., contacts) from persistent storage.
