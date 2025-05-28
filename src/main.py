@@ -159,7 +159,7 @@ def main_alternative():
         },
         Command.PHONE: {
             "args_str": "<name>",
-            "description": "Show contact's phone number",
+            "description": "Show contact's phone number(s)",
             "handler": handle_phone,
             "visible": True,
         },
