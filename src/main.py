@@ -153,6 +153,12 @@ def main_alternative():
             "handler": handle_change,
             "visible": True,
         },
+        "delete": {
+            "args_str": "<name>",
+            "description": "Delete a contact",
+            "handler": handle_delete,
+            "visible": True,
+        },
         "phone": {
             "args_str": "<name>",
             "description": "Show contact's phone number",
