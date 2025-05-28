@@ -57,7 +57,7 @@ MSG_BIRTHDAY_MOVED = "(moved to closest weekday from {0})"
 ERR_KEY_ERROR = "Requested item not found."
 ERR_INDEX_ERROR = "Missing or incomplete arguments."
 ERR_VALUE_ERROR = "Invalid input value."
-MSG_INTERRUPTED_BY_USER = "application interrupted by user"
+MSG_INTERRUPTED_BY_USER = "Application interrupted by user"
 ERR_ARG_COUNT_ERROR = "You must provide {expected} non-empty argument{plural}{details}."
 ERR_TYPE_ERROR = "Expected type '{expected}', but received type '{actual}'."
 

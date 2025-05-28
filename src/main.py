@@ -35,7 +35,6 @@ from utils.log_config import init_logging
 # TODO:
 # - Add __getstate__ __setstate__ for pickle operations with state = copy.copy(self.__dict__).
 # - To classes with custom __eq__ add __hash__ too for collections using hash.
-# - Do not show (application interrupted by user) message when keyboard_interrupt but log it.
 # - Investigate options for storing global obj __book в src/services/contacts_manager.py as non-global object.
 # - (Optional) Move prints into handler.
 # - (Optional) Future enhancement: add handling remove_phone function.
