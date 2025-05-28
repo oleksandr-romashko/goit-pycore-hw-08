@@ -169,7 +169,7 @@ UML Sequence Diagram and estimation of unified generalized application flow (cre
 
 Application screenshot:
 
-![task solution terminal screenshot](./assets/results/task_4_typical_solution.png)
+![task solution terminal screenshot](./assets/results/task_terminal_screenshot.png)
 
 
 ### Task requirements
