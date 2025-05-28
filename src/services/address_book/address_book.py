@@ -133,7 +133,7 @@ class AddressBook(UserDict):
 
         return matches
 
-    def delete(self, username: str) -> None:
+    def remove(self, username: str) -> None:
         """
         Deletes a contact from the address book.
 
@@ -477,7 +477,7 @@ if __name__ == "__main__":
 
     assert len(test_delete_book.data) == 4
     try:
-        test_delete_book.delete("unknown_when_with_contacts")
+        test_delete_book.remove("unknown_when_with_contacts")
     except ValidationError as exc:
         assert str(exc) == "Contact 'unknown_when_with_contacts' not found."
     else:
@@ -485,7 +485,7 @@ if __name__ == "__main__":
     assert len(test_delete_book.data) == 4
 
     try:
-        test_delete_book.delete("alex")
+        test_delete_book.remove("alex")
     except ValidationError as exc:
         assert str(exc) == (
             "Contact 'alex' not found. However, a contact with a similar "
@@ -496,31 +496,31 @@ if __name__ == "__main__":
     assert len(test_delete_book.data) == 4
 
     try:
-        test_delete_book.delete("     Alex   ")
+        test_delete_book.remove("     Alex   ")
     except ValidationError as exc:
         assert str(exc) == "Contact '     Alex   ' not found."
     else:
         assert False, "Should raise Validation error"
     assert len(test_delete_book.data) == 4
 
-    test_delete_book.delete("Alex")
+    test_delete_book.remove("Alex")
     assert "Alex" not in test_delete_book.data
     assert len(test_delete_book.data) == 3
 
-    test_delete_book.delete("Alice")
+    test_delete_book.remove("Alice")
     assert "Alice" not in test_delete_book.data
     assert len(test_delete_book.data) == 2
 
-    test_delete_book.delete("Bob")
+    test_delete_book.remove("Bob")
     assert "Bob" not in test_delete_book.data
     assert len(test_delete_book.data) == 1
 
-    test_delete_book.delete("NoPhone")
+    test_delete_book.remove("NoPhone")
     assert "NoPhone" not in test_delete_book.data
     assert len(test_delete_book.data) == 0
 
     try:
-        test_delete_book.delete("unknown_when_no_contacts")
+        test_delete_book.remove("unknown_when_no_contacts")
     except ValidationError as exc:
         assert str(exc) == "Contact 'unknown_when_no_contacts' not found."
     else:

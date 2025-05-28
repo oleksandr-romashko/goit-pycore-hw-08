@@ -163,7 +163,7 @@ def remove_contact(username: str) -> dict[str, str]:
         dict[str, str]: Message indicating result.
     """
     ensure_contacts_storage_not_empty(__book)
-    __book.delete(username)
+    __book.remove(username)
 
     return {
         "message": MSG_CONTACT_DELETED,
