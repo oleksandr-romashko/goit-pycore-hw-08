@@ -18,6 +18,7 @@ from cli.command_handlers import (
     handle_delete_phone,
     handle_add_birthday,
     handle_show_birthday,
+    handle_delete_birthday,
     handle_birthdays,
     handle_help,
     handle_exit,
@@ -99,6 +100,8 @@ def main():
                 print(handle_add_birthday(args))
             case Command.SHOW_BIRTHDAY:
                 print(handle_show_birthday(args))
+            case Command.DELETE_BIRTHDAY:
+                print(handle_delete_birthday(args))
             case Command.BIRTHDAYS:
                 print(handle_birthdays())
             case Command.HELP:
@@ -181,6 +184,12 @@ def main_alternative():
             "args_str": "<name>",
             "description": "Show the birthday of the specified contact",
             "handler": handle_show_birthday,
+            "visible": True,
+        },
+        Command.DELETE_BIRTHDAY: {
+            "args_str": "<name>",
+            "description": "Delete birthday of the specified contact",
+            "handler": handle_delete_birthday,
             "visible": True,
         },
         Command.BIRTHDAYS: {

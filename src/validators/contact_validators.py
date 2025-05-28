@@ -19,6 +19,7 @@ from utils.constants import (
     MSG_PHONE_NUMBER_EXISTS,
     MSG_PHONE_NUMBER_NOT_FOUND,
     MSG_BIRTHDAY_DUPLICATE,
+    MSG_BIRTHDAY_NO_BIRTHDAY,
 )
 from utils.date_utils import format_date_str
 from validators.errors import ValidationError
@@ -154,7 +155,7 @@ def ensure_phone_is_in_contact(phone_number: str, record) -> tuple[int, Phone]:
     raise ValidationError(MSG_PHONE_NUMBER_NOT_FOUND.format(phone_number, record.name))
 
 
-def ensure_birthday_in_contact_not_duplicate(birthday: date, record):
+def ensure_birthday_in_contact_is_not_duplicate(birthday: date, record):
     """
     Checks if the provided birthday is already assigned to the contact.
 
@@ -169,3 +170,18 @@ def ensure_birthday_in_contact_not_duplicate(birthday: date, record):
         username = record.name
         date_str = format_date_str(record.birthday.value)
         raise ValidationError(MSG_BIRTHDAY_DUPLICATE.format(username, date_str))
+
+
+def ensure_birthday_is_in_contact(record):
+    """
+    Checks if the provided birthday is already assigned to the contact.
+
+    Args:
+        birthday (date): Birthday to validate.
+        record: Contact record with an existing birthday.
+
+    Raises:
+        ValidationError: If the birthday is the same as the one already set.
+    """
+    if not record.birthday:
+        raise ValidationError(MSG_BIRTHDAY_NO_BIRTHDAY.format(record.name))

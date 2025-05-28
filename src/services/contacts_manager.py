@@ -34,6 +34,7 @@ from utils.constants import (
     MSG_SHOW_FOUND_MATCHES,
     MSG_BIRTHDAY_ADDED,
     MSG_BIRTHDAY_UPDATED,
+    MSG_BIRTHDAY_DELETED,
     MSG_BIRTHDAY_NO_BIRTHDAY,
     MSG_BIRTHDAY_UPCOMING_PERIOD_STR,
     MSG_BIRTHDAYS_NO_UPCOMING,
@@ -290,6 +291,27 @@ def show_birthday(username: str) -> dict[str, str | list[dict[str, str]]]:
 
     return {
         "items": items,
+    }
+
+
+@service_error
+def remove_birthday(username: str) -> dict[str, str]:
+    """
+    Remove a birthday from a contact in the address book.
+
+    Args:
+        username (str): The name of the contact whose birthday is to be removed.
+
+    Handles errors specified in service_error with appropriate user-friendly error message.
+
+    Returns:
+        dict[str, str]: Message indicating result.
+    """
+    contact = __book.find(username)
+    contact.remove_birthday()
+
+    return {
+        "message": f"{MSG_CONTACT_UPDATED} {MSG_BIRTHDAY_DELETED}",
     }
 
 

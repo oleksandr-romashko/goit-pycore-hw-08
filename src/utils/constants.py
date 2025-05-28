@@ -29,6 +29,7 @@ phone <name>                          - Show contact's phone number(s)
 delete-phone <name> <phone>           - Delete contact's phone number
 add-birthday <name> <birthday_date>   - Add a birthday to the specified contact
 show-birthday <name>                  - Show the birthday of the specified contact
+delete-birthday <name>                - Delete birthday of the specified contact
 birthdays                             - Show upcoming birthdays within the upcoming week
 help                                  - Show available commands (this menu)
 exit (or close)                       - Exit the app"""
@@ -48,6 +49,7 @@ MSG_SHOW_FOUND_MATCHES = "Found {0} match{1}"
 
 MSG_BIRTHDAY_ADDED = "Birthday added."
 MSG_BIRTHDAY_UPDATED = "Birthday updated."
+MSG_BIRTHDAY_DELETED = "Birthday deleted."
 MSG_BIRTHDAY_NO_BIRTHDAY = "No birthday found for {0}."
 MSG_BIRTHDAY_UPCOMING_PERIOD_STR = "upcoming week"
 MSG_BIRTHDAYS_NO_UPCOMING = "You have no birthday in {0}."

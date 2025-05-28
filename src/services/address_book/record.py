@@ -10,7 +10,8 @@ from validators.errors import ValidationError
 from validators.contact_validators import (
     ensure_phone_not_in_contact,
     ensure_phone_is_in_contact,
-    ensure_birthday_in_contact_not_duplicate,
+    ensure_birthday_in_contact_is_not_duplicate,
+    ensure_birthday_is_in_contact,
 )
 from validators.field_validators import (
     validate_date_format,
@@ -151,10 +152,20 @@ class Record:
             self.birthday = new_birthday
             return
 
-        ensure_birthday_in_contact_not_duplicate(new_birthday.value, self)
+        ensure_birthday_in_contact_is_not_duplicate(new_birthday.value, self)
 
         # Update (replace) existing birthday
         self.birthday = new_birthday
+
+    def remove_birthday(self) -> None:
+        """
+        Removes birthday from the record.
+
+        Raises:
+            ValidationError: If the phone number does not exist.
+        """
+        ensure_birthday_is_in_contact(self)
+        self.birthday = None
 
 
 if __name__ == "__main__":

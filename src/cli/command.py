@@ -28,6 +28,7 @@ class Command(StrEnum):
     DELETE_PHONE = "delete-phone"
     ADD_BIRTHDAY = "add-birthday"
     SHOW_BIRTHDAY = "show-birthday"
+    DELETE_BIRTHDAY = "delete-birthday"
     BIRTHDAYS = "birthdays"
     HELP = "help"
     EXIT = "exit"

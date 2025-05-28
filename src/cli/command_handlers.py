@@ -18,6 +18,7 @@ from services.contacts_manager import (
     remove_contact,
     show_phone,
     remove_phone,
+    remove_birthday,
     add_birthday,
     show_birthday,
     show_upcoming_birthdays,
@@ -206,6 +207,25 @@ def handle_show_birthday(args: list[str]) -> str:
     username = args[0]
     result = show_birthday(username)
     return format_text_output(result, lines_offset="")
+
+
+@input_error
+def handle_delete_birthday(args: list[str]) -> str:
+    """
+    Delete an existing contact's birthday.
+
+    Expected arguments in 'args': [username]
+
+    Args:
+        args (list[str]): List containing the username of the contact birthday to delete from.
+
+    Returns:
+        str: Formatted text output indicating the result of the delete operation.
+    """
+    ensure_args_have_n_arguments(args, 1, "username")
+    username = args[0]
+    result = remove_birthday(username)
+    return format_text_output(result)
 
 
 @input_error
