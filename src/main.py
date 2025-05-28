@@ -6,6 +6,7 @@ import colorama
 
 from config import DEBUG
 
+from cli.command import Command
 from cli.command_handlers import (
     handle_load_app_data,
     handle_hello,
@@ -85,27 +86,27 @@ def main():
         # TODO: Add enum match
         # TODO: Handle help in both mains using single handler with message and default value
         match command:
-            case "hello":
+            case Command.HELLO:
                 print(handle_hello())
-            case "all":
+            case Command.ALL:
                 print(handle_all())
-            case "add":
+            case Command.ADD:
                 print(handle_add(args))
-            case "change":
+            case Command.CHANGE:
                 print(handle_change(args))
-            case "delete":
+            case Command.DELETE:
                 print(handle_delete(args))
-            case "phone":
+            case Command.PHONE:
                 print(handle_phone(args))
-            case "add-birthday":
+            case Command.ADD_BIRTHDAY:
                 print(handle_add_birthday(args))
-            case "show-birthday":
+            case Command.SHOW_BIRTHDAY:
                 print(handle_show_birthday(args))
-            case "birthdays":
+            case Command.BIRTHDAYS:
                 print(handle_birthdays())
-            case "help":
+            case Command.HELP:
                 print(handle_help())
-            case "exit" | "close":
+            case Command.EXIT | Command.CLOSE:
                 # Terminates the application
                 handle_exit()
             case _:
@@ -122,7 +123,7 @@ def main_alternative():
     """
 
     menu = {
-        "hello": {
+        Command.HELLO: {
             # Help for the menu item structure:
             # A string showing expected arguments help text
             # in <command> (required argument)
@@ -135,61 +136,61 @@ def main_alternative():
             "handler": lambda _: handle_hello(),
             "visible": True,
         },
-        "all": {
+        Command.ALL: {
             "args_str": "",
             "description": "Display all contacts",
             "handler": lambda _: handle_all(),
             "visible": True,
         },
-        "add": {
+        Command.ADD: {
             "args_str": "<name> <phone>",
             "description": "Add a new contact or add phone to the existing one",
             "handler": handle_add,
             "visible": True,
         },
-        "change": {
+        Command.CHANGE: {
             "args_str": "<name> <old_phone> <new_phone>",
             "description": "Update contact's phone number",
             "handler": handle_change,
             "visible": True,
         },
-        "delete": {
+        Command.DELETE: {
             "args_str": "<name>",
             "description": "Delete a contact",
             "handler": handle_delete,
             "visible": True,
         },
-        "phone": {
+        Command.PHONE: {
             "args_str": "<name>",
             "description": "Show contact's phone number",
             "handler": handle_phone,
             "visible": True,
         },
-        "add-birthday": {
+        Command.ADD_BIRTHDAY: {
             "args_str": "<name> <birthday_date>",
             "description": "Add a birthday to the specified contact",
             "handler": handle_add_birthday,
             "visible": True,
         },
-        "show-birthday": {
+        Command.SHOW_BIRTHDAY: {
             "args_str": "<name>",
             "description": "Show the birthday of the specified contact",
             "handler": handle_show_birthday,
             "visible": True,
         },
-        "birthdays": {
+        Command.BIRTHDAYS: {
             "args_str": "",
             "description": "Show upcoming birthdays within the upcoming week",
             "handler": lambda _: handle_birthdays(),
             "visible": True,
         },
-        "help": {
+        Command.HELP: {
             "args_str": "",
             "description": "Show available commands (this menu)",
             "handler": lambda _: help_text,
             "visible": True,
         },
-        "exit": {
+        Command.EXIT: {
             # Aliases as possible alternative commands,
             # e.g., 'exit' can also be triggered by 'close'
             "aliases": ["close"],
