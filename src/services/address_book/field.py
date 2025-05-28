@@ -27,6 +27,9 @@ class Field:
     def __repr__(self):
         return f"{self.__class__.__name__}(value={repr(self.value)})"
 
+    def __hash__(self):
+        return hash(self._value)
+
     def to_dict(self) -> str:
         """
         Return the string representation of the field value.

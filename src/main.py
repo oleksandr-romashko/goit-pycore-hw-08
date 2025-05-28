@@ -34,8 +34,7 @@ from utils.log_config import init_logging
 
 # TODO:
 # - Add __getstate__ __setstate__ for pickle operations with state = copy.copy(self.__dict__).
-# - To classes with custom __eq__ add __hash__ too for collections using hash.
-# - Investigate options for storing global obj __book в src/services/contacts_manager.py as non-global object.
+# - (Optional) Future enhancement: Investigate options for storing global obj __book в src/services/contacts_manager.py as non-global object.
 # - (Optional) Move prints into handler.
 # - (Optional) Future enhancement: add handling remove_phone function.
 # - (Optional) Future enhancement: Add app state data file locking while app in
