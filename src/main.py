@@ -33,10 +33,10 @@ from utils.input_parser import parse_input
 from utils.log_config import init_logging
 
 # TODO:
-# - Add __getstate__ __setstate__ for pickle operations with state = copy.copy(self.__dict__).
-# - (Optional) Future enhancement: Investigate options for storing global obj __book в src/services/contacts_manager.py as non-global object.
-# - (Optional) Move prints into handler.
-# - (Optional) Future enhancement: add handling remove_phone function.
+# - (Optional) Future enhancement: Add handling remove_phone function.
+# - (Optional) Future enhancement: Investigate options for storing global obj __book
+#                                  from services/contacts_manager.py as non-global object.
+# - (Optional) Move prints into handler. Require architectural decision.
 # - (Optional) Future enhancement: Add app state data file locking while app in
 #                                  use by another instance, e.g using 'portalocker'.
 
