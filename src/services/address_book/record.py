@@ -10,8 +10,8 @@ from validators.errors import ValidationError
 from validators.contact_validators import (
     ensure_phone_not_in_contact,
     ensure_phone_is_in_contact,
-    ensure_birthday_in_contact_is_not_duplicate,
     ensure_birthday_is_in_contact,
+    ensure_birthday_in_contact_is_not_duplicate,
 )
 from validators.field_validators import (
     validate_date_format,

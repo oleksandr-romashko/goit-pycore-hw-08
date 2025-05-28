@@ -37,7 +37,7 @@ from utils.text_utils import format_contacts_output, format_text_output
 from validators.args_validators import ensure_args_have_n_arguments
 
 
-def handle_load_app_data():
+def handle_load_app_data() -> None:
     """
     Load application data (e.g., contacts) from persistent storage.
 

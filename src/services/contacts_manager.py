@@ -48,7 +48,7 @@ from validators.contact_validators import (
 __book = None
 
 
-def load_contacts():
+def load_contacts() -> None:
     """
     Load the contacts from persistent storage into memory.
 
