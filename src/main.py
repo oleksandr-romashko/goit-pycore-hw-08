@@ -167,7 +167,7 @@ def main_alternative():
         },
         Command.DELETE_PHONE: {
             "args_str": "<name> <phone>",
-            "description": "Delete contact's phone",
+            "description": "Delete contact's phone number",
             "handler": handle_delete_phone,
             "visible": True,
         },
