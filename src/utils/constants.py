@@ -24,6 +24,7 @@ MENU_HELP_STR = """hello                                 - Greet the user
 all                                   - Display all contacts
 add <name> <phone>                    - Add a new contact or add phone to the existing one
 change <name> <old_phone> <new_phone> - Update contact's phone number
+delete <name>                         - Delete a contact
 phone <name>                          - Show contact's phone number
 add-birthday <name> <birthday_date>   - Add a birthday to the specified contact
 show-birthday <name>                  - Show the birthday of the specified contact
